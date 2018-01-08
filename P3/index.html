@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!--
+* File: index.js
+* Date: 11/29/2017
+* Author: Class Instructor (given html code), 
+* Sherwin Fong (javascript code and modified map margins)
+*
+* Project 4, P3
+* Description: This is the provided html file for the wiki map,
+	plus the javascript code I wrote. With this setup I was unable
+	to externalize the js code and had to put it here.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/custom.css" /> 
+    <title>Maps + Wikipedia Mashup</title>
+
+    <!-- you'll need to include the following tags here
+           * google maps script tag
+           * your scripts tag
+    -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css" 
+		integrity="sha256-LcmP8hlMTofQrGU6W2q3tUnDnDZ1QVraxfMkP060ekM="
+		crossorigin="anonymous" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js" 
+    integrity="sha256-kdEnCVOWosn3TNsGslxB8ffuKdrZoGQdIdPwh7W1CsE=" 
+    crossorigin="anonymous"></script>
+	<style>
+	#mapid{
+	height: 40em;
+	width: 100em;
+	margin: auto;
+	}	
+	</style>
+  </head>
+
+  <body>
+    <!-- actual map should be built out in here -->    
+    <div id="mapid"></div> 
+
+		<script>
+			//function to render markers
+			var mapReq; //request variable
+			var wikiObj; //store the response as an object
+			var markerArr = []; //store all markers so they can be deleted			
+						
+			function render() {
+				for (var i = 0; i < markerArr.length; i++){
+					mymap.removeLayer(markerArr[i]);
+				}
+				markerArr = [];
+				
+				wikiObj = JSON.parse(mapReq.responseText);
+				wikiObj = wikiObj['query'];
+				wikiObj = wikiObj['pages']; //get to where the actual pages are
+				//console.log(wikiObj);
+					
+				//variables for each object
+				var currLat;
+				var currLong;
+				var cord;
+				var currTitle;
+				var currUrl;
+				var currImg;
+				for (const currItem in wikiObj){
+					//first put marker on map
+					cord = wikiObj[currItem]['coordinates'];
+					//check to make sure the coordinates are defined (some don't have them)
+					if (cord){
+						cord = cord['0'];
+						if (cord){
+							currLat = cord['lat'];
+							currLong = cord['lon'];
+							currTitle = wikiObj[currItem]['title'];
+							currUrl = wikiObj[currItem]['fullurl'];
+							currImg = wikiObj[currItem]['thumbnail'];
+							
+							var m = new L.marker([currLat, currLong]); //addTo(mymap);
+							markerArr.push(m);
+							m.addTo(mymap);
+							
+							//thumbnail field may not exist
+							if (currImg){
+								m.bindPopup('<a href="' + currUrl + '">' + currTitle + '</a><br><img src="' + currImg + '" alt="image not found :(">');
+							}
+							else{
+								m.bindPopup('<a href="' + currUrl + '">' + currTitle + '</a>');
+							}
+						}
+					}
+				}
+			}
+		
+			//start coordinates set to Baltimore Penn Station
+			var startLat = 39.307383;
+			var startLon = -76.615587;
+
+			var mymap = L.map('mapid');
+			mymap.setView([startLat, startLon],15);
+			L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
+			{
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors,  &copy; <a href="https://carto.com/attribution">CARTO</a>'
+			}).addTo(mymap);
+			
+			//calculate radius
+			var NEbound = mymap.getBounds().getNorthEast();
+			var rad = NEbound.distanceTo(mymap.getCenter());
+
+			var reqUrl = 'server/wiki.php?lat=' + startLat + '&long=' + startLon + '&rad=' + rad;
+			mapReq = new XMLHttpRequest();
+			mapReq.onreadystatechange = function(){
+				if (mapReq.readyState == 4){
+					if (mapReq.status == 200){
+						render();
+					}
+				}
+			}
+			mapReq.open('GET', reqUrl, true);
+			mapReq.send(null); //uncomment when testing on server
+			
+			mymap.on('moveend', function(){
+				//subsequent requests on every map move
+				//console.log("moved");
+				//need to do moveend, NOT move
+				//recalculate radius
+				var newNe = mymap.getBounds().getNorthEast();
+				var newCenter = mymap.getCenter();
+				var newRad = newNe.distanceTo(newCenter);
+				
+				var latitude = newCenter['lat'];
+				var longitude = newCenter['lng'];
+
+				var newReqUrl = 'server/wiki.php?lat=' + latitude + '&long=' + longitude + '&rad=' + newRad;
+				mapReq = new XMLHttpRequest();
+				mapReq.onreadystatechange = function(){
+					if (mapReq.readyState == 4){
+						if (mapReq.status == 200){
+							render();
+						}
+					}
+				}
+				mapReq.open('GET', newReqUrl, true);
+				mapReq.send(null); //uncomment when testing on server
+			});
+			
+		</script>
+  </body>
+</html>

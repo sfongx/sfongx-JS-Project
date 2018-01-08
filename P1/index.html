@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--
+* File: index.html
+* Date: 11/29/2017
+* Author: Class Instructor
+* Modified By: Sherwin Fong
+*
+* JS-Project, P1
+* Description: The html file provided for the Whack-A-Mole game,
+	modified with ids for the mole boxes, time remaining, score, and
+	high score so the js code can target them.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=500,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="img/touch-icon-iphone.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="img/touch-icon-ipad.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="img/touch-icon-iphone4.png" />
+    <title>Whack-a-Mole</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/custom.css" /> 
+		
+    <script src="js/main.js">
+			//js was externalized (though putting it here was acceptable)
+    </script>
+  </head>
+  <body>
+    
+    <div class="board">
+      
+      <h1>Whack-a-Mole</h1>
+      
+      <div class="row-fluid">
+				<div class="span4">
+					Time Remaining:
+					<!-- container for the time remaining - you may want to id -->
+					<div class="well" id="timeRem"> 0 </div>
+				</div>
+				<div class="span4">
+					Score:
+					<!-- container for the score - you may want to id -->
+					<div class="well" id="score"> 0 </div>
+				</div>
+				<div class="span4">
+					High Score:
+					<!-- container for the high score - you may want to id -->
+					<div class="well" id="highScore"> 0 </div>
+				</div>
+      </div>
+      
+      <div class="row-fluid board-row">
+        <!-- first row of images, you will need to add event handlers, id, etc... -->
+				<div class="span4" id="bx1">
+          <img src="img/down.png" />
+				</div>
+				<div class="span4" id="bx2">
+					<img src="img/down.png" />
+				</div>
+				<div class="span4" id="bx3">
+					<img src="img/down.png" />
+				</div>
+      </div>
+      
+      <div class="row-fluid board-row">
+        <!-- second row, middle image shows how (during game play) 
+             a mole can be shown by swapping down.png with up.png -->
+				<div class="span4" id="bx4">
+					<img src="img/down.png" />
+				</div>
+				<div class="span4" id="bx5">
+					<img src="img/up.png" />
+				</div>
+				<div class="span4" id="bx6">
+					<img src="img/down.png" />
+				</div>
+      </div>
+      
+      <div class="row-fluid board-row">
+				<div class="span4" id="bx7">
+					<img src="img/down.png" />
+				</div>
+				<div class="span4" id="bx8">
+					<img src="img/down.png" />
+				</div>
+				<div class="span4" id="bx9">
+					<img src="img/down.png" />
+				</div>
+			</div>
+      
+      <div class="board-row">
+				<!-- need to bind event handler to restart the game -->
+				<input type="button" id="startBtn" value="Start Game" class="btn btn-primary btn-large" />
+			</div>
+      
+    </div> <!-- end div.board -->
+
+  </body>
+</html>

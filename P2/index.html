@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!--
+* File: index.js
+* Date: 11/29/2017
+* Author: Class Instructor
+* Modified By: Sherwin Fong
+*
+* JS-Project, P2
+* Description: This is the provided HTML file for the shoutbox.
+	I've commented out the message examples as they were there
+	to show how to correctly format it. The messages are
+	displayed using javascript. An ID for the message box and
+	name tags for the form,	name of sender,	and message sent
+	were added so that the js code	can target them.
+
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ajax Shoutbox</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/custom.css" /> 
+    
+		<script src="js/main1.js"></script>
+  </head>
+  <body>
+    <!-- the title bar at the top -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <span class="brand">Ajax Shoutbox</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <form name="mainForm">      
+        <!-- this contains the messages that are posted by all users -->
+				<div class="control-group">
+          <div class="faux-label">Messages:</div>
+          <div class="controls">
+						<!-- the actual messages go in here -->
+            <div id="messages">
+							<!-- below are some sample shouts, you'll want to eventually remove
+                   but they're here to show you how they were formatted -->
+							<!--<div class="shout">
+                <span class="timestamp">[Mar 17 1:09:25 am]</span>
+                <span class="name">Milton</span>: 
+                <span style="message">So I don't see why -</span>
+              </div>
+              <div class="shout">
+                <span class="timestamp">[Mar 17 1:09:34 am]</span>
+                <span class="name">Peter</span>:
+                <span style="message">Ok. </span>
+              </div>
+              <div class="shout">
+                <span class="timestamp">[Mar 17 1:10:59 am]</span>
+                <span class="name">Milton</span>:
+                <span style="message">The radio, I can't -</span>
+              </div>-->	    
+						</div>
+          </div>
+				</div>
+
+				<!-- the actual name input -->
+				<div class="control-group">
+          <label class="control-label" for="name">Name:</label>
+          <div class="controls">
+            <input type="text" class="stretch" id="name" name="fname"/>
+          </div>
+				</div>
+
+				<!-- the actual messages textarea -->
+				<div class="control-group">
+          <label class="control-label" for="message">Message:</label>
+          <div class="controls">
+            <textarea class="stretch" id="message" name="fmessage" rows="3"></textarea>
+          </div>
+				</div>
+
+				<!-- clear and send buttons -->
+				<div class="actions">
+          <input type="button" class="btn btn-large" onclick="clearClicked()" value="Clear" />
+          <input type="button" class="btn btn-large btn-primary" onclick="sendClicked()" value="Send" />
+				</div>
+      </form>
+    </div>
+  </body>
+</html>
