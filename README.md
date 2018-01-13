@@ -15,3 +15,6 @@ NOTE: To get this to work on my own computer wtih a php server I needed to
 install php curl with the following command (after looking it up on Stack Overflow): 
 
 sudo apt-get install php5-curl
+
+Disclaimer: This is a school project. If the same project is assigned in future
+semesters please do not copy this as it would be a violation of academic integrity
